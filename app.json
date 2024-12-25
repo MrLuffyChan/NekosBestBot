@@ -1,0 +1,42 @@
+{
+    "name": "NekosBestBot",
+    "description": "A Anime Themed Anime React Bot",
+    "logo": "https://telegra.ph/file/895f87f9f8028ecc4b632.jpg",
+    "repository": "https://github.com/ctzfamily/NekoBestBot",
+    "keywords": [
+        "pyrogrambot",
+        "telegram bot",
+        "NekoBestBot"
+    ],
+    "env": {
+        "BOT_TOKEN": {
+            "description": "Your Bot token from @Botfather",
+            "value": ""
+        },
+        "API_ID": {
+            "description": "Your API_ID from https://my.telegram.org",
+            "value": ""
+        },
+        "API_HASH": {
+            "description": "Your API_HASH from https://my.telegram.org",          
+            "value": ""
+        },
+        "BOT_USERNAME": {
+             "description": "Your bot username without @",
+             "value": ""
+        },
+        "SUPPORT": {
+             "description": "Your SupportChat username without @",
+             "value": "nandhasupport"
+       },
+        "UPDATES": {
+              "description": "Your UpdatesChannel username without @",
+              "value": "nandhabots"
+       }
+    },
+    "buildpacks": [
+        {
+            "url": "heroku/python"
+        }
+    ]
+}
