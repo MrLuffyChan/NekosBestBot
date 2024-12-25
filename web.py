@@ -12,7 +12,7 @@ import asyncio, aiohttp, logging, traceback
 
 
 
-log = logger.getLogger(__name__)
+log = logging.getLogger(__name__)
 
 
 routes = web.RouteTableDef()
