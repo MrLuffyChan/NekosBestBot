@@ -10,6 +10,11 @@ WEB_SLLEP = 3*60
 from aiohttp import web
 import asyncio, aiohttp, logging, traceback
 
+
+
+log = logger.getLogger(__name__)
+
+
 routes = web.RouteTableDef()
 
 @routes.get('/', allow_head=True)
@@ -34,13 +39,13 @@ async def keep_alive():
                     timeout=aiohttp.ClientTimeout(total=10)
                 ) as session:
                     async with session.get(WEB_URL) as resp:
-                        logging.info(
+                        log.info(
                             "Pinged {} with response: {}".format(
                                 WEB_URL, resp.status
                             )
                         )
             except asyncio.TimeoutError:
-                logging.warning("Couldn't connect to the site URL..!")
+                log.warning("Couldn't connect to the site URL..!")
             except Exception:
                 traceback.print_exc()
 
