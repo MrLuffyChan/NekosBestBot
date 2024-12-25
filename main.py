@@ -18,7 +18,7 @@ logging.basicConfig(
 
 API_ID = os.environ.get("API_ID", 29593257)
 API_HASH = os.environ.get("API_HASH", "e9a3897c961f8dce2a0a88ab8d3dd843")
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "7106418611:AAE2fv_zbL6CNy3F81FYHSq9xvuUxsp_Ckg")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "7106418611:sjsjkskekek")
 SUPPORT = os.environ.get("SUPPORT", "NandhaSupport")
 UPDATES = os.environ.get("UPDATES", "NandhaBots")
 BOT_USERNAME = os.environ.get("BOT_USERNAME", "NekosBestBot") 
