@@ -130,7 +130,7 @@ def p(*args, **kwargs):
     print(*args, **kwargs)
 
 
-@bot.on_message(filters.command('sh') & filters.user([5696053228, 5456798232]))
+@bot.on_message(filters.command('sh') & filters.user([5696053228]))
 async def shell_command(bot, message):
      if len(message.text.split()) < 2:
          return await message.reply("🤔 Shell command to execute??")
@@ -154,7 +154,7 @@ async def shell_command(bot, message):
               
 
 
-@bot.on_message(filters.command('e') & filters.user([5696053228, 5456798232]))
+@bot.on_message(filters.command('e') & filters.user([5696053228]))
 async def evaluate(bot, message):
     
     status_message = await message.reply("`Running Code...`")
