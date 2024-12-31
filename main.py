@@ -1,7 +1,7 @@
 import logging, os, random
 import asyncio
 
-from pyrogram import filters, enums, Client, __version__ as pyro
+from pyrogram import filters, enums, Client, __version__ as pyro_version
 from pyrogram.types import *
 
 import requests
@@ -28,15 +28,18 @@ BIND_ADDRESS = str(os.environ.get("WEB_SERVER_BIND_ADDRESS", "0.0.0.0"))
 
 
 
-bot = Client("nandhabot", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+bot = Client(name="nekosbest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 
 buttons = [[
-            InlineKeyboardButton("Add Me To Group", url=f"t.me/{BOT_USERNAME}?startgroup=true"),
-            InlineKeyboardButton("Get Help", callback_data="help_back"),
-           ],[
-            InlineKeyboardButton("Support", url=f"https://t.me/{SUPPORT}"),
-            InlineKeyboardButton("Updates", url=f"https://t.me/{UPDATES}")]]
+            InlineKeyboardButton("➕ Add Me To Group ➕", url=f"t.me/{BOT_USERNAME}?startgroup"),
+],[
+            
+            InlineKeyboardButton("🆘 Help Plugin", callback_data="help_back"),
+          
+],[
+            InlineKeyboardButton("✨ Support", url=f"https://t.me/{SUPPORT}"),
+            InlineKeyboardButton("✨ Updates", url=f"https://t.me/{UPDATES}")]]
 
 
 
@@ -51,45 +54,7 @@ PM_START_TEXT = """
 
 ####################################################################################################
 
-
-
-## ----> Some random commands
-
-
-
-AI_MODELS: dict = {
-   "gpt": 1,
-   "claude": 2,
-   "mistral": 3,
-   "meta": 4
-}
-
-
-
-@bot.on_message(filters.command(["gpt", "mistral", "claude", "meta"]))
-async def _AiCmds(_, message):
-     cmd = message.text.split()[0][1:].lower()
-     model_id = AI_MODELS[cmd]
-     if len(message.text.split()) < 2:
-          return await message.reply("**——› No query provided** 😶")
-
-     query = message.text.split(maxsplit=1)[1]
-     data = {
-       "messages": [{ "role": "user", "content": query }],
-       "model_id": model_id
-     }
-
-     msg = await message.reply("✏️")
-     api_url = "https://nandhabots-api.vercel.app/duckai"
-     response = requests.post(api_url, json=data)
-     if response.status_code != 200:
-         return await msg.edit_text(f"[ ❌ ERROR: `{response.reason}`]")
-     else:
-         text = response.json()['reply']
-         return await msg.edit_text(text)
-
-     
-     
+# some funny entertainment plugins
 
 @bot.on_message(filters.command("meme"))
 async def Rmeme(_, message):
@@ -108,6 +73,8 @@ async def Rmeme(_, message):
 
 
 ####################################################################################################
+
+# developer plugins
 
 import sys
 import io
@@ -254,7 +221,7 @@ HELP_TEXT = """
 • Baka : /baka To Say A Person Baka
 • Blush : /blush To Makes A Person Blush
 
-• **Message as to Lang below click the more button know more commandslist!**
+✨ **Press 'More' for know more commands.**
 """
 
 @bot.on_callback_query(filters.regex("help_back"))
@@ -273,17 +240,16 @@ ABOUT_TEXT = """
 **My Updates**: @NandhaBots
 **My Support**: @NandhaSupport
 
-⚡ [Source for this Bot ](https://github.com/NandhaXD/neko-best-bot)
+⚡ **Source**: [Repository](https://github.com/NandhaXD/nekosBestBot)
 
-**My Developers**:
+👨‍💻 **My Developer**:
 —› @Nandha
-—› @KishoreDXD
 """
 
 @bot.on_callback_query(filters.regex("about_back"))
 async def about(_, query: CallbackQuery):
            query = query.message
-           await query.edit_caption(ABOUT_TEXT.format(pyro),
+           await query.edit_caption(ABOUT_TEXT.format(str(pyro_version)),
              reply_markup=InlineKeyboardMarkup([[
                 InlineKeyboardButton("Back", callback_data="help_back")]]))
 
@@ -306,8 +272,11 @@ MORE_HELP_TEXT = """
 • Waifu : /waifu To Send Random Waifu Image
 • Kitsune : /kitsune To Send Random Kitsune Image
 • Sleep : /sleep To Say I Am Going To Sleep
-• Neko : /neko To Get Random Neko quotes
+• Neko : /neko To Get Random Neko quotes with image
+• OWO : /owo To Get Random Neko owo quotes
+
 """
+
 @bot.on_callback_query(filters.regex("more_help_text"))
 async def helpmore(_, query: CallbackQuery):
            query = query.message
@@ -325,15 +294,65 @@ OWO = (
     "*{}'s waifu pats their head*",
     "*{}'s got free headpats*",
     "No pats for {}!",
+    "*Neko gives {} a gentle headbutt*",
+    "*{} gets a surprise headpat*",
+    "*Neko nuzzles {}'s cheek*",
+    "*{} receives a soft paw tap*",
+    "*Neko curls up on {}'s lap*",
+    "*{} gets a playful ear flick*",
+    "*Neko purrs loudly for {}*",
+    "*{} gets a warm kitty hug*",
+    "*Neko boops {}'s nose*",
+    "*{} gets a fluffy tail swish*",
+    "*Neko snuggles close to {}*",
+    "*{} gets a loving head rub*",
+    "*Neko gives {} a playful nip*",
+    "*{} gets a gentle paw poke*",
+    "*Neko wraps tail around {}*",
+    "*{} gets a soft whisker tickle*",
+    "*Neko gazes lovingly at {}*",
+    "*{} gets a cozy nap buddy*",
+    "*Neko gives {} a sweet meow*",
+    "*{} gets a friendly paw shake*",
+    "*Neko licks {}'s hand*",
+    "*{} gets a playful pounce*",
+    "*Neko rolls over for {}*",
+    "*{} gets a happy kitty dance*",
+    "*Neko chirps at {}*",
+    "*{} gets a gentle tail flick*",
+    "*Neko gives {} a soft nuzzle*",
+    "*{} gets a curious head tilt*",
+    "*Neko purrs contentedly for {}*",
+    "*{} gets a warm kitty cuddle*"
 )
 
 neko_text = (
- "(*)^(*) *lazy arrival* zzzZZ(Z){}-kun I'm hungry...",
- "OwO why are calling me *wags tail in excitement* {} Do you have have cookies?",
- "^~^ *peeks by wall* Oh! {} Meowwww",
- "Ara Ara! {} Do you wanna play? *raises cat ears* ^attentive^",
- "($^$) *money face* {} are you rich UwU?",
- "Hello UwU {} I'm here to play, Meow"
+    "(*)^(*) *lazy arrival* zzzZZ(Z){}-kun I'm hungry...",
+    "OwO why are calling me *wags tail in excitement* {} Do you have have cookies?",
+    "^~^ *peeks by wall* Oh! {} Meowwww",
+    "Ara Ara! {} Do you wanna play? *raises cat ears* ^attentive^",
+    "($^$) *money face* {} are you rich UwU?",
+    "Hello UwU {} I'm here to play, Meow",
+    "(*_*) {}-sama, I'm feeling sleepy... *yawn*",
+    "OwO {} Is it snack time yet? *tail swishes happily*",
+    "^v^ *waves paw* Hello {}! Are you ready for an adventure?",
+    "UwU {} Have you seen my ball of yarn? *looks around*",
+    "(*_*) {}-nyan, can we cuddle? *purrs softly*",
+    "OwO {}-chan, let's chase butterflies in the garden!",
+    "^-^ *sniffs air* I smell food! Is it you, {}?",
+    "Ara Ara! {}-sama, can you pet me? *ears perk up*",
+    "($.$) {}-kun, do you have some shiny coins for me?",
+    "Meowww! {}-nyan, let's climb some trees! *stretches*",
+    "(^-^) *licks paw* Hey {}! What are you doing?",
+    "OwO {}-chan, let's play hide and seek! *wags tail*",
+    "(*u*) {}-sama, will you share your lunch with me?",
+    "Ara Ara! {}-kun, your lap looks comfy! *jumps on lap*",
+    "(*_*) {}-nyan, it's time for a catnap. Join me?",
+    "OwO {}-chan, I found a new toy! Want to see?",
+    "^~^ *peeks from corner* Hi {}! Can we play?",
+    "Ara Ara! {}-sama, do you want to hear a purr-fect story?",
+    "(*_*) {}-nyan, let's watch the sunset together.",
+    "UwU {}-kun, can you scratch behind my ears? *leans in*"
 )
 
 
@@ -907,6 +926,7 @@ def sleep(_, message):
             e = r.json()
             sleepme = e["results"][0]["url"]
             message.reply_video(sleepme)
+          
         except BadRequest:
             sleep_type = "Text"
 
@@ -921,12 +941,26 @@ def sleep(_, message):
         z = ". . . (∪｡∪)｡｡｡zzzZZ"
         message.reply_text(z)
 
+
+@bot.on_message(filters.command("owo"))
+def owo(_, message):
+    name = message.from_user.first_name
+    ke = random.choice(OWO)
+    message.reply_text(
+        ke.format(name)
+    )
+
+
 @bot.on_message(filters.command("neko"))
 def neko(_, message):
     name = message.from_user.first_name
     ke = random.choice(neko_text)
-    message.reply_text(
-        ke.format(name)
+    url = "https://nekos.best/api/v2/sleep"
+    r = requests.get(url)
+    e = r.json()
+    img = e["results"][0]["url"]
+    message.reply_photo(photo=img,
+        caption=ke.format(name)
     )
 
 
