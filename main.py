@@ -274,7 +274,7 @@ MORE_HELP_TEXT = """
 • Sleep : /sleep To Say I Am Going To Sleep
 • Neko : /neko To Get Random Neko quotes with image
 • OWO : /owo To Get Random Neko owo quotes
-
+• MEME: /meme get random meme.
 """
 
 @bot.on_callback_query(filters.regex("more_help_text"))
@@ -955,7 +955,7 @@ def owo(_, message):
 def neko(_, message):
     name = message.from_user.first_name
     ke = random.choice(neko_text)
-    url = "https://nekos.best/api/v2/sleep"
+    url = "https://nekos.best/api/v2/neko"
     r = requests.get(url)
     e = r.json()
     img = e["results"][0]["url"]
