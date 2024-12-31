@@ -28,7 +28,7 @@ BIND_ADDRESS = str(os.environ.get("WEB_SERVER_BIND_ADDRESS", "0.0.0.0"))
 
 
 
-bot = Client(name="nekosbest", api_id=API_ID, api_hash=API_HASH, bot_token=BOT_TOKEN)
+bot = Client(name="nekosbest", api_id=int(API_ID), api_hash=API_HASH, bot_token=BOT_TOKEN)
 
 
 buttons = [[
