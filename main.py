@@ -4,7 +4,7 @@ import asyncio
 from pyrogram import filters, enums, Client, __version__ as pyro_version
 from pyrogram.types import *
 
-import aiohttp
+import requests
 
 log = logging.getLogger(__name__)
 
@@ -28,7 +28,12 @@ BIND_ADDRESS = str(os.environ.get("WEB_SERVER_BIND_ADDRESS", "0.0.0.0"))
 
 
 
-bot = Client(name="nekosbest", api_id=int(API_ID), api_hash=API_HASH, bot_token=BOT_TOKEN)
+bot = Client(
+  name="nekosbest",
+  api_id=int(API_ID),
+  api_hash=API_HASH,
+  bot_token=BOT_TOKEN
+)
 
 
 buttons = [[
@@ -43,32 +48,11 @@ buttons = [[
 
 
 
-
-class Request:
-    @staticmethod
-    async def get(*args, **kwargs):
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(*args, **kwargs) as response:
-                    response.raise_for_status()
-                    return response
-        except aiohttp.ClientError as e:
-            print(f"Request failed: {e}")
-            return None
-
-    @staticmethod
-    async def post(*args, **kwargs):
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.post(*args, **kwargs) as response:
-                    response.raise_for_status()
-                    return response
-        except aiohttp.ClientError as e:
-            print(f"Request failed: {e}")
-            return None
-
-requests = Request
-
+PM_START_TEXT = """
+**Welcome** {}~kun ฅ(≈>ܫ<≈)
+`I'm A Neko Themed Telegram Bot Using Nekos.best! `
+**Make Your Groups Active By Adding Me There! ××**
+"""
 
 
 
@@ -77,21 +61,19 @@ requests = Request
 
 # some funny entertainment plugins
 
-
-
 @bot.on_message(filters.command("meme"))
 async def meme(_, message):
-      response = await requests.get("https://nandhabots-api.vercel.app/meme")
-      if response.status == 200:
-           response_json = await response.json()
+      response = requests.get("https://nandhabots-api.vercel.app/meme")
+      if response.status_code == 200:
+           response_json = response.json()
            caption = response_json["title"]
            photo = response_json["image"]
            meme_id = response_json["meme_id"]
            return await message.reply_photo(
                 photo=photo,
-                caption=f"**{caption}** â€” `{meme_id}`")
+                caption=f"**{caption}** — `{meme_id}`")
       else:
-         return await m.reply("ðŸ™€ Error...")
+         return await m.reply("🙀 Error...")
 
 
 
@@ -123,7 +105,7 @@ def p(*args, **kwargs):
 @bot.on_message(filters.command('sh') & filters.user([5696053228]))
 async def shell_command(bot, message):
      if len(message.text.split()) < 2:
-         return await message.reply("ðŸ¤” Shell command to execute??")
+         return await message.reply("🤔 Shell command to execute??")
      command = message.text.split(maxsplit=1)[1]
 
      msg = await message.reply("**--> Shell command processing....**", quote=True)
@@ -218,42 +200,33 @@ async def evaluate(bot, message):
 
 ####################################################################################################
 
-
-
-
-PM_START_TEXT = """
-**Welcome** {}~kun à¸…(â‰ˆ>Ü«<â‰ˆ)
-`I'm A Neko Themed Telegram Bot Using Nekos.best! `
-**Make Your Groups Active By Adding Me There! Ã—Ã—**
-"""
-
 @bot.on_message(filters.command(["start","help"]))
 async def start(_, m):
        url = "https://nekos.best/api/v2/neko"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        NEKO_IMG = e["results"][0]["url"]
        await m.reply_photo(photo=NEKO_IMG,caption=PM_START_TEXT.format(m.from_user.mention),
              reply_markup=InlineKeyboardMarkup(buttons))
 
 HELP_TEXT = """
 **Anime Themed SFW:**
-â€¢ Kiss : /kiss To Kiss A Person
-â€¢ Highfive : /highfive To Highfive A Person
-â€¢ Happy : /happy To Makes A Person Happy
-â€¢ Laugh : /laugh To Makes A Person Laugh
-â€¢ Bite : /bite To Bite A Person
-â€¢ Poke : /poke To Poke A Person
-â€¢ Tickle : /tickle To Tickle A Person
-â€¢ Wave : /wave To Wave A Person
-â€¢ Thumbsup : /thumbsup To Thumbsup A Person
-â€¢ Stare : /stare To Makes A Person Stare
-â€¢ Cuddle : /cuddle To Cuddle A Person
-â€¢ Smile : /smile To Makes A Person Smile
-â€¢ Baka : /baka To Say A Person Baka
-â€¢ Blush : /blush To Makes A Person Blush
+• Kiss : /kiss To Kiss A Person
+• Highfive : /highfive To Highfive A Person
+• Happy : /happy To Makes A Person Happy
+• Laugh : /laugh To Makes A Person Laugh
+• Bite : /bite To Bite A Person
+• Poke : /poke To Poke A Person
+• Tickle : /tickle To Tickle A Person
+• Wave : /wave To Wave A Person
+• Thumbsup : /thumbsup To Thumbsup A Person
+• Stare : /stare To Makes A Person Stare
+• Cuddle : /cuddle To Cuddle A Person
+• Smile : /smile To Makes A Person Smile
+• Baka : /baka To Say A Person Baka
+• Blush : /blush To Makes A Person Blush
 
-âœ¨ **Press 'More' for know more commands.**
+✨ **Press 'More' for know more commands.**
 """
 
 @bot.on_callback_query(filters.regex("help_back"))
@@ -272,12 +245,11 @@ ABOUT_TEXT = """
 **My Updates**: @NandhaBots
 **My Support**: @NandhaSupport
 
- Source: [Repository](https://github.com/NandhaXD/nekosBestBot)
+⚡ **Source**: [Repository](https://github.com/NandhaXD/nekosBestBot)
 
-
- My Developers:
-—› @Nandha
-—› @KishoreDxD
+👨‍💻 **My Developers**:
+—> @Nandha
+—> @KishoreDXD
 """
 
 @bot.on_callback_query(filters.regex("about_back"))
@@ -289,26 +261,26 @@ async def about(_, query: CallbackQuery):
 
 MORE_HELP_TEXT = """
 **Anime themed SFW:**
-â€¢ Think : /think To Makes A Person Think
-â€¢ Pout : /pout To Makes A Person Pout
-â€¢ Facepalm : /facepalm To Makes A Person Facepalm
-â€¢ Wink : /wink To Makes A Person Wink
-â€¢ Smug : /smug To Makes A Person Smug
-â€¢ Cry : /cry To Makes A Person Cry
-â€¢ Dance : /dance To Makes A Person Dance
-â€¢ Feed : /feed To Feed A Person
-â€¢ Shrug : /shrug To Shrug A Person
-â€¢ Bored : /bored To Makes A Person Bored
-â€¢ Pat : /pat To Pat A Person
-â€¢ Hug : /hug To Hug A Person
-â€¢ Slap : /slap To Slap A Person
-â€¢ Cute : /cute To Say Me Cute
-â€¢ Waifu : /waifu To Send Random Waifu Image
-â€¢ Kitsune : /kitsune To Send Random Kitsune Image
-â€¢ Sleep : /sleep To Say I Am Going To Sleep
-â€¢ Neko : /neko To Get Random Neko quotes with image
-â€¢ OWO : /owo To Get Random Neko owo quotes
-â€¢ MEME: /meme get random meme.
+• Think : /think To Makes A Person Think
+• Pout : /pout To Makes A Person Pout
+• Facepalm : /facepalm To Makes A Person Facepalm
+• Wink : /wink To Makes A Person Wink
+• Smug : /smug To Makes A Person Smug
+• Cry : /cry To Makes A Person Cry
+• Dance : /dance To Makes A Person Dance
+• Feed : /feed To Feed A Person
+• Shrug : /shrug To Shrug A Person
+• Bored : /bored To Makes A Person Bored
+• Pat : /pat To Pat A Person
+• Hug : /hug To Hug A Person
+• Slap : /slap To Slap A Person
+• Cute : /cute To Say Me Cute
+• Waifu : /waifu To Send Random Waifu Image
+• Kitsune : /kitsune To Send Random Kitsune Image
+• Sleep : /sleep To Say I Am Going To Sleep
+• Neko : /neko To Get Random Neko quotes with image
+• OWO : /owo To Get Random Neko owo quotes
+• MEME: /meme get random meme.
 """
 
 @bot.on_callback_query(filters.regex("more_help_text"))
@@ -394,8 +366,8 @@ neko_text = (
 async def kiss(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/kiss"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        kissme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -403,8 +375,8 @@ async def kiss(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/kiss"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       kissme = e["results"][0]["url"]
       await message.reply_video(kissme, caption="*Kisses u with all my love*~")
       return
@@ -413,8 +385,8 @@ async def kiss(_, message):
 async def highfive(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/highfive"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        highfiveme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -422,8 +394,8 @@ async def highfive(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/highfive"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       highfiveme = e["results"][0]["url"]
       await message.reply_video(highfiveme, caption="*Highfives U With All My Friendship*~")
       return
@@ -432,8 +404,8 @@ async def highfive(_, message):
 async def happy(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/happy"
-       r =  await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        happyme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -441,8 +413,8 @@ async def happy(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/happy"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       happyme = e["results"][0]["url"]
       await message.reply_video(happyme, caption="*U So Happy Today But Why*~")
       return
@@ -451,8 +423,8 @@ async def happy(_, message):
 async def laugh(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/laugh"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        laughme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -460,8 +432,8 @@ async def laugh(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/laugh"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       laughme = e["results"][0]["url"]
       await message.reply_video(laughme, caption="*I Can't Control Laughing*~")
       return
@@ -470,8 +442,8 @@ async def laugh(_, message):
 async def bite(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/bite"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        biteme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -479,8 +451,8 @@ async def bite(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/bite"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       biteme = e["results"][0]["url"]
       await message.reply_video(biteme, caption="*Bites u with all my strength*~")
       return
@@ -489,8 +461,8 @@ async def bite(_, message):
 async def poke(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/poke"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        pokeme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -498,8 +470,8 @@ async def poke(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/poke"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       pokeme = e["results"][0]["url"]
       await message.reply_video(pokeme, caption="*Poking You Continuously*~")
       return
@@ -508,8 +480,8 @@ async def poke(_, message):
 async def tickle(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/tickle"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        tickleme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -517,8 +489,8 @@ async def tickle(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/tickle"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       tickleme = e["results"][0]["url"]
       await message.reply_video(tickleme, caption="*Tickling You Continuously Don't Laugh*~")
       return
@@ -527,8 +499,8 @@ async def tickle(_, message):
 async def wave(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/wave"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        waveme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -536,8 +508,8 @@ async def wave(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/wave"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       waveme = e["results"][0]["url"]
       await message.reply_video(waveme, caption="*My Hand Waving To You*~")
       return
@@ -546,8 +518,8 @@ async def wave(_, message):
 async def thumbsup(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/thumbsup"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        thumbsupme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -555,8 +527,8 @@ async def thumbsup(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/thumbsup"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       thumbsupme = e["results"][0]["url"]
       await message.reply_video(thumbsupme, caption="*Hey Come Let's Thumbsup*~")
       return
@@ -565,8 +537,8 @@ async def thumbsup(_, message):
 async def stare(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/stare"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        stareme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -574,8 +546,8 @@ async def stare(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/stare"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       stareme = e["results"][0]["url"]
       await message.reply_video(stareme, caption="*What You Said Say It Again*~")
       return
@@ -584,8 +556,8 @@ async def stare(_, message):
 async def cuddle(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/cuddle"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        cuddleme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -593,8 +565,8 @@ async def cuddle(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/cuddle"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       cuddleme = e["results"][0]["url"]
       await message.reply_video(cuddleme, caption="*Cuddle u with all my love*~")
       return
@@ -603,8 +575,8 @@ async def cuddle(_, message):
 async def smile(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/smile"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        smileme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -612,8 +584,8 @@ async def smile(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/smile"
-      r = await requests.get(url)
-      e =  await r.json()
+      r = requests.get(url)
+      e = r.json()
       smileme = e["results"][0]["url"]
       await message.reply_video(smileme, caption="*Is Smiles Looking Beautiful ?*~")
       return
@@ -622,8 +594,8 @@ async def smile(_, message):
 async def baka(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/baka"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        bakame = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -631,8 +603,8 @@ async def baka(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/baka"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       bakame = e["results"][0]["url"]
       await message.reply_video(bakame, caption="*You A Stupid Baka!*~")
       return
@@ -641,8 +613,8 @@ async def baka(_, message):
 async def blush(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/blush"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        blushme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -650,8 +622,8 @@ async def blush(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/blush"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       blushme = e["results"][0]["url"]
       name1 = message.from_user.first_name
       await message.reply_video(blushme, caption="*Oh {}~kun I Luv You*~".format(name1))
@@ -661,8 +633,8 @@ async def blush(_, message):
 async def think(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/think"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        thinkme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -670,8 +642,8 @@ async def think(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/think"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       thinkme = e["results"][0]["url"]
       name = message.from_user.first_name
       await message.reply_video(thinkme, caption="*{}~kun Do You Love Me?*~".format(name))
@@ -681,8 +653,8 @@ async def think(_, message):
 async def pout(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/pout"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        poutme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -690,8 +662,8 @@ async def pout(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/pout"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       name = message.from_user.first_name
       poutme = e["results"][0]["url"]
       await message.reply_video(poutme, caption="*Oi {}~kun*~".format(name))
@@ -701,8 +673,8 @@ async def pout(_, message):
 async def facepalm(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/facepalm"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        facepalmme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -710,8 +682,8 @@ async def facepalm(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/facepalm"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       name = message.from_user.first_name
       facepalmme = e["results"][0]["url"]
       await message.reply_video(facepalmme, caption="*Oh Shit {}~kun*~".format(name))
@@ -721,8 +693,8 @@ async def facepalm(_, message):
 async def wink(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/wink"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        winkme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -730,8 +702,8 @@ async def wink(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/wink"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       winkme = e["results"][0]["url"]
       await message.reply_video(winkme, caption="*Winks u with all my love*~")
       return
@@ -740,8 +712,8 @@ async def wink(_, message):
 async def smug(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/smug"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        smugme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -749,8 +721,8 @@ async def smug(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/smug"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       smugme = e["results"][0]["url"]
       await message.reply_video(smugme, caption="*Hehehehehehehehe*~")
       return
@@ -759,8 +731,8 @@ async def smug(_, message):
 async def cry(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/cry"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        cryme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -768,8 +740,8 @@ async def cry(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/cry"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       cryme = e["results"][0]["url"]
       await message.reply_video(cryme, caption="*I Can't Stop Crying*~")
       return
@@ -778,8 +750,8 @@ async def cry(_, message):
 async def dance(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/dance"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        danceme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -787,8 +759,8 @@ async def dance(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/dance"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       name = message.from_user.first_name
       danceme = e["results"][0]["url"]
       await message.reply_video(danceme, caption="*{}~kun. Can You Dance With Me*~".format(name))
@@ -798,8 +770,8 @@ async def dance(_, message):
 async def feed(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/feed"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        feedme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -807,8 +779,8 @@ async def feed(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/feed"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       feedme = e["results"][0]["url"]
       name = message.from_user.first_name
       await message.reply_video(feedme, caption="*Open You Mouth {}~kun*~".format(name))
@@ -827,8 +799,8 @@ async def shrug(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/shrug"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       name = message.from_user.first_name
       shrugme = e["results"][0]["url"]
       await message.reply_video(shrugme, caption="*I Don't Know About It {}~kun*~".format(name))
@@ -838,8 +810,8 @@ async def shrug(_, message):
 async def bored(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/bored"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        boredme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -847,8 +819,8 @@ async def bored(_, message):
        return
     else:
       url = "https://nekos.best/api/v2/bored"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       name = message.from_user.first_name
       boredme = e["results"][0]["url"]
       await message.reply_video(boredme, caption="*Today Was So Boring {}~kun Any Idea?*~".format(name))
@@ -859,8 +831,8 @@ async def bored(_, message):
 async def pat(_, message):
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/pat"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        patme = e["results"][0]["url"]
        name1 = message.from_user.first_name
        name2 = message.reply_to_message.from_user.first_name
@@ -872,18 +844,18 @@ async def pat(_, message):
           else message.from_user.first_name
       )
       url = "https://nekos.best/api/v2/pat"
-      r = await requests.get(url)
-      e = await r.json()
+      r = requests.get(url)
+      e = r.json()
       patme = e["results"][0]["url"]
       await message.reply_video(patme, caption=random.choice(OWO).format(name))
 
 @bot.on_message(filters.command("hug"))
-async def hug(_, message):
+adync def hug(_, message):
     
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/hug"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        hugme = e["results"][0]["url"]
        
        name1 = message.from_user.first_name
@@ -891,8 +863,8 @@ async def hug(_, message):
        await message.reply_to_message.reply_video(hugme, caption="*{} hugs {}*".format(name1, name2))
     else:
        url = "https://nekos.best/api/v2/hug"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        hugme = e["results"][0]["url"]
        
        await message.reply_video(hugme, caption="*Hugs u with all my love*~")
@@ -902,8 +874,8 @@ async def slap(_, message):
     
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/slap"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        slapme = e["results"][0]["url"]
        
        name1 = message.from_user.first_name
@@ -911,8 +883,8 @@ async def slap(_, message):
        await message.reply_to_message.reply_video(slapme, caption="*{} slaps {}*".format(name1, name2))
     else:
        url = "https://nekos.best/api/v2/slap"
-       r = await requests.get(url)
-       e = await r.json()
+       r = requests.get(url)
+       e = r.json()
        slapme = e["results"][0]["url"]
        
        await message.reply_video(slapme, caption="Here... Take this from me.")
@@ -921,8 +893,8 @@ async def slap(_, message):
 async def cute(_, message):
     name = message.from_user.first_name         
     url = f"https://nekos.best/api/v2/neko"
-    r = await requests.get(url)
-    e = await r.json()
+    r = requests.get(url)
+    e = r.json()
     cuteme = e["results"][0]["url"]
     await message.reply_photo(
         cuteme, caption="Thank UwU {}-Kun  *smiles and hides ^~^*".format(name)
@@ -932,8 +904,8 @@ async def cute(_, message):
 async def waifu(_, message):
     name = message.from_user.first_name         
     url = f"https://nekos.best/api/v2/waifu"
-    r = await requests.get(url)
-    e = await r.json()
+    r = requests.get(url)
+    e = r.json()
     waifume = e["results"][0]["url"]
     await message.reply_photo(
         waifume, caption="Here I Am {}-Kun's *Waifu*".format(name)
@@ -943,8 +915,8 @@ async def waifu(_, message):
 async def kitsune(_, message):
     name = message.from_user.first_name         
     url = f"https://nekos.best/api/v2/kitsune"
-    r = await requests.get(url)
-    e = await r.json()
+    r = requests.get(url)
+    e = r.json()
     kitsuneme = e["results"][0]["url"]
     await message.reply_photo(
         kitsuneme, caption="Did You Called Me {}-Kun's *?*".format(name)
@@ -956,8 +928,8 @@ async def sleep(_, message):
     if sleep_type == "Gif":
         try:
             url = "https://nekos.best/api/v2/sleep"
-            r = await requests.get(url)
-            e = await r.json()
+            r = requests.get(url)
+            e = r.json()
             sleepme = e["results"][0]["url"]
             await message.reply_video(sleepme)
           
@@ -972,8 +944,8 @@ async def sleep(_, message):
             sleep_type = "Text"
 
     if sleep_type == "Text":
-        z = ". . . (âˆªï½¡âˆª)ï½¡ï½¡ï½¡zzzZZ"
-        message.reply_text(z)
+        z = ". . . (∪｡∪)｡｡｡zzzZZ"
+        await message.reply_text(z)
 
 
 @bot.on_message(filters.command("owo"))
@@ -990,8 +962,8 @@ async def neko(_, message):
     name = message.from_user.first_name
     ke = random.choice(neko_text)
     url = "https://nekos.best/api/v2/neko"
-    r = await requests.get(url)
-    e = await r.json()
+    r = requests.get(url)
+    e = r.json()
     img = e["results"][0]["url"]
     await message.reply_photo(photo=img,
         caption=ke.format(name)
