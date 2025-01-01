@@ -44,21 +44,31 @@ buttons = [[
 
 
 
-
 class Request:
     @staticmethod
     async def get(*args, **kwargs):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(*args, **kwargs) as response:
-                return response
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(*args, **kwargs) as response:
+                    response.raise_for_status()
+                    return response
+        except aiohttp.ClientError as e:
+            print(f"Request failed: {e}")
+            return None
 
     @staticmethod
     async def post(*args, **kwargs):
-        async with aiohttp.ClientSession() as session:
-            async with session.post(*args, **kwargs) as response:
-                return response
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.post(*args, **kwargs) as response:
+                    response.raise_for_status()
+                    return response
+        except aiohttp.ClientError as e:
+            print(f"Request failed: {e}")
+            return None
 
 requests = Request
+
 
 
 
@@ -70,7 +80,7 @@ requests = Request
 
 
 @bot.on_message(filters.command("meme"))
-async def Rmeme(_, message):
+async def meme(_, message):
       response = await requests.get("https://nandhabots-api.vercel.app/meme")
       if response.status == 200:
            response_json = await response.json()
