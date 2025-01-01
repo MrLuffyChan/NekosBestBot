@@ -850,7 +850,7 @@ async def pat(_, message):
       await message.reply_video(patme, caption=random.choice(OWO).format(name))
 
 @bot.on_message(filters.command("hug"))
-adync def hug(_, message):
+async def hug(_, message):
     
     if message.reply_to_message:
        url = "https://nekos.best/api/v2/hug"
