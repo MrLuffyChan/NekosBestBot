@@ -38,8 +38,8 @@ buttons = [[
             InlineKeyboardButton("🆘 Help Plugin", callback_data="help_back"),
           
 ],[
-            InlineKeyboardButton("✨ Support", url=f"https://t.me/{SUPPORT}"),
-            InlineKeyboardButton("✨ Updates", url=f"https://t.me/{UPDATES}")]]
+            InlineKeyboardButton("👥 Support", url=f"https://t.me/{SUPPORT}"),
+            InlineKeyboardButton("📢 Updates", url=f"https://t.me/{UPDATES}")]]
 
 
 
@@ -79,9 +79,9 @@ async def Rmeme(_, message):
            meme_id = response_json["meme_id"]
            return await message.reply_photo(
                 photo=photo,
-                caption=f"**{caption}** — `{meme_id}`")
+                caption=f"**{caption}** â€” `{meme_id}`")
       else:
-         return await m.reply("🙀 Error...")
+         return await m.reply("ðŸ™€ Error...")
 
 
 
@@ -113,7 +113,7 @@ def p(*args, **kwargs):
 @bot.on_message(filters.command('sh') & filters.user([5696053228]))
 async def shell_command(bot, message):
      if len(message.text.split()) < 2:
-         return await message.reply("🤔 Shell command to execute??")
+         return await message.reply("ðŸ¤” Shell command to execute??")
      command = message.text.split(maxsplit=1)[1]
 
      msg = await message.reply("**--> Shell command processing....**", quote=True)
@@ -212,9 +212,9 @@ async def evaluate(bot, message):
 
 
 PM_START_TEXT = """
-**Welcome** {}~kun ฅ(≈>ܫ<≈)
+**Welcome** {}~kun à¸…(â‰ˆ>Ü«<â‰ˆ)
 `I'm A Neko Themed Telegram Bot Using Nekos.best! `
-**Make Your Groups Active By Adding Me There! ××**
+**Make Your Groups Active By Adding Me There! Ã—Ã—**
 """
 
 @bot.on_message(filters.command(["start","help"]))
@@ -228,22 +228,22 @@ async def start(_, m):
 
 HELP_TEXT = """
 **Anime Themed SFW:**
-• Kiss : /kiss To Kiss A Person
-• Highfive : /highfive To Highfive A Person
-• Happy : /happy To Makes A Person Happy
-• Laugh : /laugh To Makes A Person Laugh
-• Bite : /bite To Bite A Person
-• Poke : /poke To Poke A Person
-• Tickle : /tickle To Tickle A Person
-• Wave : /wave To Wave A Person
-• Thumbsup : /thumbsup To Thumbsup A Person
-• Stare : /stare To Makes A Person Stare
-• Cuddle : /cuddle To Cuddle A Person
-• Smile : /smile To Makes A Person Smile
-• Baka : /baka To Say A Person Baka
-• Blush : /blush To Makes A Person Blush
+â€¢ Kiss : /kiss To Kiss A Person
+â€¢ Highfive : /highfive To Highfive A Person
+â€¢ Happy : /happy To Makes A Person Happy
+â€¢ Laugh : /laugh To Makes A Person Laugh
+â€¢ Bite : /bite To Bite A Person
+â€¢ Poke : /poke To Poke A Person
+â€¢ Tickle : /tickle To Tickle A Person
+â€¢ Wave : /wave To Wave A Person
+â€¢ Thumbsup : /thumbsup To Thumbsup A Person
+â€¢ Stare : /stare To Makes A Person Stare
+â€¢ Cuddle : /cuddle To Cuddle A Person
+â€¢ Smile : /smile To Makes A Person Smile
+â€¢ Baka : /baka To Say A Person Baka
+â€¢ Blush : /blush To Makes A Person Blush
 
-✨ **Press 'More' for know more commands.**
+âœ¨ **Press 'More' for know more commands.**
 """
 
 @bot.on_callback_query(filters.regex("help_back"))
@@ -266,8 +266,8 @@ ABOUT_TEXT = """
 
 
  My Developers:
-�� @Nandha
-�� @KishoreDxD
+—› @Nandha
+—› @KishoreDxD
 """
 
 @bot.on_callback_query(filters.regex("about_back"))
@@ -279,26 +279,26 @@ async def about(_, query: CallbackQuery):
 
 MORE_HELP_TEXT = """
 **Anime themed SFW:**
-• Think : /think To Makes A Person Think
-• Pout : /pout To Makes A Person Pout
-• Facepalm : /facepalm To Makes A Person Facepalm
-• Wink : /wink To Makes A Person Wink
-• Smug : /smug To Makes A Person Smug
-• Cry : /cry To Makes A Person Cry
-• Dance : /dance To Makes A Person Dance
-• Feed : /feed To Feed A Person
-• Shrug : /shrug To Shrug A Person
-• Bored : /bored To Makes A Person Bored
-• Pat : /pat To Pat A Person
-• Hug : /hug To Hug A Person
-• Slap : /slap To Slap A Person
-• Cute : /cute To Say Me Cute
-• Waifu : /waifu To Send Random Waifu Image
-• Kitsune : /kitsune To Send Random Kitsune Image
-• Sleep : /sleep To Say I Am Going To Sleep
-• Neko : /neko To Get Random Neko quotes with image
-• OWO : /owo To Get Random Neko owo quotes
-• MEME: /meme get random meme.
+â€¢ Think : /think To Makes A Person Think
+â€¢ Pout : /pout To Makes A Person Pout
+â€¢ Facepalm : /facepalm To Makes A Person Facepalm
+â€¢ Wink : /wink To Makes A Person Wink
+â€¢ Smug : /smug To Makes A Person Smug
+â€¢ Cry : /cry To Makes A Person Cry
+â€¢ Dance : /dance To Makes A Person Dance
+â€¢ Feed : /feed To Feed A Person
+â€¢ Shrug : /shrug To Shrug A Person
+â€¢ Bored : /bored To Makes A Person Bored
+â€¢ Pat : /pat To Pat A Person
+â€¢ Hug : /hug To Hug A Person
+â€¢ Slap : /slap To Slap A Person
+â€¢ Cute : /cute To Say Me Cute
+â€¢ Waifu : /waifu To Send Random Waifu Image
+â€¢ Kitsune : /kitsune To Send Random Kitsune Image
+â€¢ Sleep : /sleep To Say I Am Going To Sleep
+â€¢ Neko : /neko To Get Random Neko quotes with image
+â€¢ OWO : /owo To Get Random Neko owo quotes
+â€¢ MEME: /meme get random meme.
 """
 
 @bot.on_callback_query(filters.regex("more_help_text"))
@@ -962,7 +962,7 @@ async def sleep(_, message):
             sleep_type = "Text"
 
     if sleep_type == "Text":
-        z = ". . . (∪｡∪)｡｡｡zzzZZ"
+        z = ". . . (âˆªï½¡âˆª)ï½¡ï½¡ï½¡zzzZZ"
         message.reply_text(z)
 
 
