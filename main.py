@@ -244,66 +244,68 @@ def convert_button(data, columns):
     return result
 
 
-NEKOS_BUTTONS = convert_button([
-          InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)
-         ], columns=3
-    )
-                                  
+
+
+NEKOS_BUTTONS = convert_button(
+    [InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)],
+    columns=3
+)
+
 
 @bot.on_inline_query()
 async def inline(bot, query):
-     q = query.query
-     inline_query_id = query.id
+    q = query.query
+    inline_query_id = query.id
 
-     
-     if not q:
-         results = [
-           InlineQueryResultArticle(
-            title="Query Not Found! 🚫",
-            input_message_content=InputTextMessageContent(message_text="Query not found! I needed a endpoint senpai 🔎"),
-            reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS))
-         ]
-         return await bot.answer_inline_query(inline_query_id, results)
-       
-     pattern = m.text.split()[0]
-     src = NEKOS_BEST.get(pattern)
-     if not src:
-         results = [
-           types.InlineQueryResultArticle(
-            title="Given Query Not Found! 😅",
-            input_message_content=InputTextMessageContent(message_text="Given query is not found! please use valid endpoint senpai 🔎"),
-            reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS))
-         ]
-         return await bot.answer_inline_query(inline_query_id, results)
-       
-     else:
-          results = []
-          api_url = f"https://nekos.best/api/v2/{pattern}?amount=20"
-          api_result = requests.get(api_url).json()
-          data_result = api_results['results']
-          media_type = get_InputMediaType(src)
-          for data in data_result:
-               buttons = [
-                  InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
-                  InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL)),
-               ],[
-                  InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)
-               ]
-               text = (
-                 f"✨ **Result for {pattern}**\n\n"
-                 f"📛 **Artist**: {data.get('artist_name', BOT_USERNAME)}\n"
-                 f"❤️ **By @{BOT_USERNAME}**"
-               )
-               results.append(
-                     media_type(
-                       data['url'],
-                       reply_markup=buttons
-                     )
-               )
-          return await bot.answer_inline_query(inline_query_id, results, cache_time=2)
-       
-              
-         
+    if not q:
+        results = [
+            InlineQueryResultArticle(
+                title="Query Not Found! 🚫",
+                input_message_content=InputTextMessageContent(message_text="Query not found! I needed an endpoint senpai 🔎"),
+                reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
+            )
+        ]
+        return await bot.answer_inline_query(inline_query_id, results)
+
+    pattern = q.split()[0]
+    src = NEKOS_BEST.get(pattern)
+    if not src:
+        results = [
+            InlineQueryResultArticle(
+                title="Given Query Not Found! 😅",
+                input_message_content=InputTextMessageContent(message_text="Given query is not found! Please use a valid endpoint senpai 🔎"),
+                reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
+            )
+        ]
+        return await bot.answer_inline_query(inline_query_id, results)
+
+    results = []
+    api_url = f"https://nekos.best/api/v2/{pattern}?amount=20"
+    api_result = requests.get(api_url).json()
+    data_result = api_result['results']
+    media_type = get_InputMediaType(src)
+    for data in data_result:
+        buttons = [
+            [InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
+             InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL))],
+            [InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)]
+        ]
+        text = (
+            f"✨ **Result for {pattern}**\n\n"
+            f"📛 **Artist**: {data.get('artist_name', BOT_USERNAME)}\n"
+            f"❤️ **By @{BOT_USERNAME}**"
+        )
+        results.append(
+            media_type(
+                data['url'],
+                reply_markup=InlineKeyboardMarkup(buttons)
+            )
+        )
+    return await bot.answer_inline_query(inline_query_id, results, cache_time=2)
+
+
+                                  
+
 ####################################################################################################
 
 
