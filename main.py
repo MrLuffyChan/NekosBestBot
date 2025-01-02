@@ -216,16 +216,16 @@ def get_InputMediaType(data):
        format = data['format']
   
        if format == "png":
-            return types.InlineQueryResultPhoto
+            return InlineQueryResultPhoto
        elif format == "gif":
-            return types.InlineQueryResultAnimation
+            return InlineQueryResultAnimation
          
        raise Exception(f'Unkown media type found for get_InputMediaType: {format}')
 
 
 
 def convert_button(data, columns):
-    buttons = [types.InlineKeyboardButton(switch_inline_query_current_chat=q) for q in data]
+    buttons = [InlineKeyboardButton(switch_inline_query_current_chat=q) for q in data]
     result = []
     
     for i in range(0, len(buttons), columns):
@@ -245,7 +245,7 @@ def convert_button(data, columns):
 
 
 NEKOS_BUTTONS = convert_button([
-            types.InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)
+          InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)
          ], columns=3
     )
                                   
@@ -258,10 +258,10 @@ async def inline(bot, query):
      
      if not q:
          results = [
-           types.InlineQueryResultArticle(
+           InlineQueryResultArticle(
             title="Query Not Found! 🚫",
-            input_message_content=types.InputTextMessageContent(message_text="Query not found! I needed a endpoint senpai 🔎"),
-            reply_markup=types.InlineKeyboardMarkup(NEKOS_BUTTONS))
+            input_message_content=InputTextMessageContent(message_text="Query not found! I needed a endpoint senpai 🔎"),
+            reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS))
          ]
          return await bot.answer_inline_query(inline_query_id, results)
        
@@ -271,8 +271,8 @@ async def inline(bot, query):
          results = [
            types.InlineQueryResultArticle(
             title="Given Query Not Found! 😅",
-            input_message_content=types.InputTextMessageContent(message_text="Given query is not found! please use valid endpoint senpai 🔎"),
-            reply_markup=types.InlineKeyboardMarkup(NEKOS_BUTTONS))
+            input_message_content=InputTextMessageContent(message_text="Given query is not found! please use valid endpoint senpai 🔎"),
+            reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS))
          ]
          return await bot.answer_inline_query(inline_query_id, results)
        
@@ -284,10 +284,10 @@ async def inline(bot, query):
           media_type = get_InputMediaType(src)
           for data in data_result:
                buttons = [
-                  types.InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
-                  types.InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL)),
+                  InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
+                  InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL)),
                ],[
-                  types.InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)
+                  InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)
                ]
                text = (
                  f"✨ **Result for {pattern}**\n\n"
