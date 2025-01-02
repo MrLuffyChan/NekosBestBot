@@ -325,7 +325,7 @@ async def inline(bot, query):
         results.append(
             media_type(
                 data['url'],
-                caption=f"**{NEKOS_BEST_TEXT[pattern].format(user.full_name)}**",
+                caption=f"**{NEKOS_BEST_TEXT[pattern].format(name=user.full_name)}**",
             )
         )
     return await bot.answer_inline_query(inline_query_id, results, cache_time=2, is_gallery=True)
