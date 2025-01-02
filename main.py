@@ -2,7 +2,7 @@ import logging, os, random
 import asyncio
 
 from pyrogram import filters, enums, Client, __version__ as pyro_version
-from pyrogram.types import *
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputTextMessageContent, InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultAnimation
 
 import requests
 
@@ -238,8 +238,10 @@ def convert_button(data, columns):
     return result
 
 
-NEKOS_BUTTONS = convert_button(list(NEKOS_BEST.keys()), columns=3)
-
+NEKOS_BUTTONS = convert_button(
+    [InlineKeyboardButton(text=q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)],
+    columns=3
+)
 
 @bot.on_inline_query()
 async def inline(bot, query):
