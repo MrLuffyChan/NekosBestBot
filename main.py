@@ -2,7 +2,7 @@ import logging, os, random
 import asyncio
 
 from pyrogram import filters, enums, Client, __version__ as pyro_version
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputTextMessageContent, InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultAnimation
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputTextMessageContent, InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultAnimation, CallbackQuery
 
 import requests
 
