@@ -10,10 +10,9 @@ log = logging.getLogger(__name__)
 
 
 # enable logging
-FORMAT = "[Nekos-Best-Bot] %(message)s"
-logging.basicConfig(
-    level=logging.INFO, format=FORMAT
-)
+lFORMAT = f"[NekosBestBot] %(message)s"
+logging.basicConfig(level=logging.INFO, handlers=[logging.FileHandler('logs.txt'), logging.StreamHandler()], format=FORMAT)
+
   
 
 API_ID = os.environ.get("API_ID", 29593257)
