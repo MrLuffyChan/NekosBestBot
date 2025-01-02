@@ -22,7 +22,7 @@ BOT_TOKEN = os.environ.get("BOT_TOKEN", "7106418611:sjsjkskekek")
 SUPPORT = os.environ.get("SUPPORT", "NandhaSupport")
 UPDATES = os.environ.get("UPDATES", "NandhaBots")
 BOT_USERNAME = os.environ.get("BOT_USERNAME", "NekosBestBot") 
-
+BOT_URL = f"https://t.me/{BOT_USERNAME}"
 PORT = int(os.environ.get("PORT", 8080))
 BIND_ADDRESS = str(os.environ.get("WEB_SERVER_BIND_ADDRESS", "0.0.0.0"))
 
@@ -200,6 +200,113 @@ async def evaluate(bot, message):
 
 ####################################################################################################
 
+
+
+
+####################################################################################################
+
+#inline for @nekosBestBot
+
+
+NEKOS_BEST = {"neko":{"format":"png"},"waifu":{"format":"png"},"husbando":{"format":"png"},"kitsune":{"format":"png"},"lurk":{"format":"gif"},"shoot":{"format":"gif"},"sleep":{"format":"gif"},"shrug":{"format":"gif"},"stare":{"format":"gif"},"wave":{"format":"gif"},"poke":{"format":"gif"},"smile":{"format":"gif"},"peck":{"format":"gif"},"wink":{"format":"gif"},"blush":{"format":"gif"},"smug":{"format":"gif"},"tickle":{"format":"gif"},"yeet":{"format":"gif"},"think":{"format":"gif"},"highfive":{"format":"gif"},"feed":{"format":"gif"},"bite":{"format":"gif"},"bored":{"format":"gif"},"nom":{"format":"gif"},"yawn":{"format":"gif"},"facepalm":{"format":"gif"},"cuddle":{"format":"gif"},"kick":{"format":"gif"},"happy":{"format":"gif"},"hug":{"format":"gif"},"baka":{"format":"gif"},"pat":{"format":"gif"},"nod":{"format":"gif"},"nope":{"format":"gif"},"kiss":{"format":"gif"},"dance":{"format":"gif"},"punch":{"format":"gif"},"handshake":{"format":"gif"},"slap":{"format":"gif"},"cry":{"format":"gif"},"pout":{"format":"gif"},"handhold":{"format":"gif"},"thumbsup":{"format":"gif"},"laugh":{"format":"gif"}}
+
+
+
+def get_InputMediaType(data):
+       format = data['format']
+  
+       if format == "png":
+            return types.InlineQueryResultPhoto
+       elif format == "gif":
+            return types.InlineQueryResultAnimation
+         
+       raise Exception(f'Unkown media type found for get_InputMediaType: {format}')
+
+
+
+def convert_button(data, columns):
+    buttons = [types.InlineKeyboardButton(switch_inline_query_current_chat=q) for q in data]
+    result = []
+    
+    for i in range(0, len(buttons), columns):
+        result.append(buttons[i:i + columns])
+    
+    # If the last row has fewer columns, append it to the result
+    if len(result[-1]) < columns:
+        result[-1].extend(buttons[len(result[-1]):])
+
+    # If still, there are buttons left, add a new row with them
+    if len(result[-1]) > columns:
+        extra_buttons = result[-1][columns:]
+        result[-1] = result[-1][:columns]
+        result.append(extra_buttons)
+    
+    return result
+
+
+NEKOS_BUTTONS = convert_button([
+            types.InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)
+         ], columns=3
+    )
+                                  
+
+@bot.on_inline_query()
+async def inline(bot, query):
+     q = query.query
+     inline_query_id = query.id
+
+     
+     if not q:
+         results = [
+           types.InlineQueryResultArticle(
+            title="Query Not Found! 🚫",
+            input_message_content=types.InputTextMessageContent(message_text="Query not found! I needed a endpoint senpai 🔎"),
+            reply_markup=types.InlineKeyboardMarkup(NEKOS_BUTTONS))
+         ]
+         return await bot.answer_inline_query(inline_query_id, results)
+       
+     pattern = m.text.split()[0]
+     src = NEKOS_BEST.get(pattern)
+     if not src:
+         results = [
+           types.InlineQueryResultArticle(
+            title="Given Query Not Found! 😅",
+            input_message_content=types.InputTextMessageContent(message_text="Given query is not found! please use valid endpoint senpai 🔎"),
+            reply_markup=types.InlineKeyboardMarkup(NEKOS_BUTTONS))
+         ]
+         return await bot.answer_inline_query(inline_query_id, results)
+       
+     else:
+          results = []
+          api_url = f"https://nekos.best/api/v2/{pattern}?amount=20"
+          api_result = requests.get(api_url).json()
+          data_result = api_results['results']
+          media_type = get_InputMediaType(src)
+          for data in data_result:
+               buttons = [
+                  types.InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
+                  types.InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL)),
+               ],[
+                  types.InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)
+               ]
+               text = (
+                 f"✨ **Result for {pattern}**\n\n"
+                 f"📛 **Artist**: {data.get('artist_name', BOT_USERNAME)}\n"
+                 f"❤️ **By @{BOT_USERNAME}**"
+               )
+               results.append(
+                     media_type(
+                       data['url'],
+                       reply_markup=buttons
+                     )
+               )
+          return await bot.answer_inline_query(inline_query_id, results, cache_time=2)
+       
+              
+         
+####################################################################################################
+
+
 @bot.on_message(filters.command(["start","help"]))
 async def start(_, m):
        url = "https://nekos.best/api/v2/neko"
@@ -245,11 +352,8 @@ ABOUT_TEXT = """
 **My Updates**: @NandhaBots
 **My Support**: @NandhaSupport
 
-⚡ **Source**: [Repository](https://github.com/NandhaXD/nekosBestBot)
-
-👨‍💻 **My Developers**:
-—> @Nandha
-—> @KishoreDXD
+⚡ **Source**: 
+https://github.com/NandhaXD/nekosBestBot
 """
 
 @bot.on_callback_query(filters.regex("about_back"))
