@@ -210,8 +210,52 @@ async def evaluate(bot, message):
 
 
 NEKOS_BEST = {"neko":{"format":"png"},"waifu":{"format":"png"},"husbando":{"format":"png"},"kitsune":{"format":"png"},"lurk":{"format":"gif"},"shoot":{"format":"gif"},"sleep":{"format":"gif"},"shrug":{"format":"gif"},"stare":{"format":"gif"},"wave":{"format":"gif"},"poke":{"format":"gif"},"smile":{"format":"gif"},"peck":{"format":"gif"},"wink":{"format":"gif"},"blush":{"format":"gif"},"smug":{"format":"gif"},"tickle":{"format":"gif"},"yeet":{"format":"gif"},"think":{"format":"gif"},"highfive":{"format":"gif"},"feed":{"format":"gif"},"bite":{"format":"gif"},"bored":{"format":"gif"},"nom":{"format":"gif"},"yawn":{"format":"gif"},"facepalm":{"format":"gif"},"cuddle":{"format":"gif"},"kick":{"format":"gif"},"happy":{"format":"gif"},"hug":{"format":"gif"},"baka":{"format":"gif"},"pat":{"format":"gif"},"nod":{"format":"gif"},"nope":{"format":"gif"},"kiss":{"format":"gif"},"dance":{"format":"gif"},"punch":{"format":"gif"},"handshake":{"format":"gif"},"slap":{"format":"gif"},"cry":{"format":"gif"},"pout":{"format":"gif"},"handhold":{"format":"gif"},"thumbsup":{"format":"gif"},"laugh":{"format":"gif"}}
-
-
+NEKOS_BEST_TEXT = {
+    "neko": "owo {name} send's neko pic 🐾💕",
+    "waifu": "nyaaa {name} found their waifu 💖",
+    "husbando": "meow {name} sends husbando pic 💕",
+    "kitsune": "kitsune {name} sends a foxy pic 🦊✨",
+    "happy": "nayyy {name} is happy 😸🎉",
+    "lurk": "shhh {name} is lurking 👀🔍",
+    "shoot": "bang bang {name} shoots 🔫😹",
+    "sleep": "zzz {name} is sleeping 💤😴",
+    "shrug": "meh {name} shrugs 🤷‍♂️😸",
+    "stare": "owo {name} is staring 👀🐱",
+    "wave": "hi hi {name} waves 👋😺",
+    "poke": "poke poke {name} pokes 👉😹",
+    "smile": "smile {name} is smiling 😊😸",
+    "peck": "peck peck {name} pecks 😚🐾",
+    "wink": "wink {name} winks 😉🐱",
+    "blush": "blush blush {name} blushes 😳💕",
+    "smug": "smug {name} looks smug 😏✨",
+    "tickle": "tickle tickle {name} tickles 😆😺",
+    "yeet": "yeet {name} yeets 💨😹",
+    "think": "hmm {name} is thinking 🤔🐾",
+    "highfive": "highfive {name} gives a highfive 🙌😸",
+    "feed": "nom nom {name} feeds 🍽️🐱",
+    "bite": "chomp {name} bites 😬🐾",
+    "bored": "sigh {name} is bored 😒😿",
+    "nom": "nom nom {name} noms 🍴😺",
+    "yawn": "yawn {name} yawns 😪🐱",
+    "facepalm": "facepalm {name} facepalms 🤦‍♂️😹",
+    "cuddle": "cuddle cuddle {name} cuddles 🤗💕",
+    "kick": "kick {name} kicks 👟😼",
+    "hug": "hug hug {name} hugs 🤗😺",
+    "baka": "baka {name} says baka 🙄😹",
+    "pat": "pat pat {name} pats 🖐️😸",
+    "nod": "nod {name} nods 👍🐾",
+    "nope": "nope {name} says nope 🙅‍♂️🐱",
+    "kiss": "kiss kiss {name} kisses 😘💕",
+    "dance": "dance dance {name} dances 💃🐱",
+    "punch": "punch {name} punches 👊😼",
+    "handshake": "shake shake {name} handshakes 🤝🐾",
+    "slap": "slap slap {name} slaps ✋😹",
+    "cry": "sob sob {name} cries 😢🐱",
+    "pout": "pout {name} pouts 😡😿",
+    "handhold": "hold hold {name} holds hands 🤝😺",
+    "thumbsup": "thumbs up {name} gives a thumbs up 👍😸",
+    "laugh": "giggle giggle {name} laughs 😂😹"
+}
 
 def get_InputMediaType(data):
        format = data['format']
@@ -248,13 +292,14 @@ NEKOS_BUTTONS = convert_button(
 @bot.on_inline_query()
 async def inline(bot, query):
     q = query.query
+    user = q.from_user
     inline_query_id = query.id
 
     if not q:
         results = [
             InlineQueryResultArticle(
-                title="Query Not Found! 🚫",
-                input_message_content=InputTextMessageContent(message_text="Query not found! I needed an endpoint senpai 🔎"),
+                title="Query Not Found! 😹",
+                input_message_content=InputTextMessageContent(message_text="**Query nyan found! I needed an endpoint, senpai~!** 🐾"),
                 reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
             )
         ]
@@ -265,8 +310,8 @@ async def inline(bot, query):
     if not src:
         results = [
             InlineQueryResultArticle(
-                title="Given Query Not Found! 😅",
-                input_message_content=InputTextMessageContent(message_text="Given query is not found! Please use a valid endpoint senpai 🔎"),
+                title="Given nyan! Query Not Found! 😹",
+                input_message_content=InputTextMessageContent(message_text="❌ **Given nyan query is not found! Please use a valid endpoint, senpai~!** 😸"),
                 reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
             )
         ]
@@ -278,22 +323,10 @@ async def inline(bot, query):
     data_result = api_result['results']
     media_type = get_InputMediaType(src)
     for data in data_result:
-        buttons = [[
-            #[InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
-            #InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL))],[
-              
-              InlineKeyboardButton(f"🔎 {pattern.capitalize()}", switch_inline_query_current_chat=pattern)
-        ]]
-        text = (
-            f"✨ **Result for {pattern}**\n\n"
-            f"📛 **Artist**: {data.get('artist_name', BOT_USERNAME)}\n"
-            f"❤️ **By @{BOT_USERNAME}**"
-        )
         results.append(
             media_type(
                 data['url'],
-                #caption=text,
-                reply_markup=InlineKeyboardMarkup(buttons)
+                caption=f"**{NEKOS_BEST_TEXT[pattern]}**".format(user.full_name),
             )
         )
     return await bot.answer_inline_query(inline_query_id, results, cache_time=2, is_gallery=True)
