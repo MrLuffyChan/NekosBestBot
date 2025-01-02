@@ -224,32 +224,21 @@ def get_InputMediaType(data):
 
 
 
-def convert_button(data, columns):
-    buttons = [InlineKeyboardButton(switch_inline_query_current_chat=q) for q in data]
-    result = []
-    
-    for i in range(0, len(buttons), columns):
-        result.append(buttons[i:i + columns])
-    
-    # If the last row has fewer columns, append it to the result
-    if len(result[-1]) < columns:
-        result[-1].extend(buttons[len(result[-1]):])
 
-    # If still, there are buttons left, add a new row with them
-    if len(result[-1]) > columns:
-        extra_buttons = result[-1][columns:]
-        result[-1] = result[-1][:columns]
-        result.append(extra_buttons)
-    
+def convert_button(data, columns):
+    result = []
+
+    for i in range(0, len(data), columns):
+        result.append(data[i:i + columns])
+
+    # If the last row has fewer columns, extend it with remaining data
+    if len(result[-1]) < columns:
+        result[-1].extend(data[len(result[-1]):])
+
     return result
 
 
-
-
-NEKOS_BUTTONS = convert_button(
-    [InlineKeyboardButton(q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)],
-    columns=3
-)
+NEKOS_BUTTONS = convert_button(list(NEKOS_BEST.keys()), columns=3)
 
 
 @bot.on_inline_query()
