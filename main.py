@@ -305,7 +305,7 @@ async def inline(bot, query):
         ]
         return await bot.answer_inline_query(inline_query_id, results)
 
-    pattern = q.split()[0]
+    pattern = q.split()[0].lower()
     src = NEKOS_BEST.get(pattern)
     if not src:
         results = [
