@@ -278,11 +278,12 @@ async def inline(bot, query):
     data_result = api_result['results']
     media_type = get_InputMediaType(src)
     for data in data_result:
-        buttons = [
-            [InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
-             InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL))],
-            [InlineKeyboardButton(pattern, switch_inline_query_current_chat=pattern)]
-        ]
+        buttons = [[
+            #[InlineKeyboardButton('🔎 Source', url=data.get('source_url', BOT_URL)),
+            #InlineKeyboardButton('👤 Artist', url=data.get('artist_href', BOT_URL))],[
+              
+              InlineKeyboardButton(f"🔎 {pattern.capitalize()}", switch_inline_query_current_chat=pattern)
+        ]]
         text = (
             f"✨ **Result for {pattern}**\n\n"
             f"📛 **Artist**: {data.get('artist_name', BOT_USERNAME)}\n"
@@ -291,7 +292,7 @@ async def inline(bot, query):
         results.append(
             media_type(
                 data['url'],
-                caption=text,
+                #caption=text,
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
         )
