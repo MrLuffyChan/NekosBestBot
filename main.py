@@ -1307,7 +1307,7 @@ if __name__ == "__main__":
      bot.run()
      log.info('Bot Started!')
      with bot:
-        bot.send_message(f"@{SUPPORT}", "**Nyan nyan\~ Neko Neko is back from a fresh start!** 🐾😸✨")
+        bot.send_message(f"@{SUPPORT}", "**Nyan nyan~ Neko Neko is back from a fresh start!** 🐾😸✨")
          
      
      
