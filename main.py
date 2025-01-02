@@ -209,52 +209,231 @@ async def evaluate(bot, message):
 
 
 NEKOS_BEST = {"neko":{"format":"png"},"waifu":{"format":"png"},"husbando":{"format":"png"},"kitsune":{"format":"png"},"lurk":{"format":"gif"},"shoot":{"format":"gif"},"sleep":{"format":"gif"},"shrug":{"format":"gif"},"stare":{"format":"gif"},"wave":{"format":"gif"},"poke":{"format":"gif"},"smile":{"format":"gif"},"peck":{"format":"gif"},"wink":{"format":"gif"},"blush":{"format":"gif"},"smug":{"format":"gif"},"tickle":{"format":"gif"},"yeet":{"format":"gif"},"think":{"format":"gif"},"highfive":{"format":"gif"},"feed":{"format":"gif"},"bite":{"format":"gif"},"bored":{"format":"gif"},"nom":{"format":"gif"},"yawn":{"format":"gif"},"facepalm":{"format":"gif"},"cuddle":{"format":"gif"},"kick":{"format":"gif"},"happy":{"format":"gif"},"hug":{"format":"gif"},"baka":{"format":"gif"},"pat":{"format":"gif"},"nod":{"format":"gif"},"nope":{"format":"gif"},"kiss":{"format":"gif"},"dance":{"format":"gif"},"punch":{"format":"gif"},"handshake":{"format":"gif"},"slap":{"format":"gif"},"cry":{"format":"gif"},"pout":{"format":"gif"},"handhold":{"format":"gif"},"thumbsup":{"format":"gif"},"laugh":{"format":"gif"}}
+
+
 NEKOS_BEST_TEXT = {
-    "neko": "owo {name} send's neko pic 🐾💕",
-    "waifu": "nyaaa {name} found their waifu 💖",
-    "husbando": "meow {name} sends husbando pic 💕",
-    "kitsune": "kitsune {name} sends a foxy pic 🦊✨",
-    "happy": "nayyy {name} is happy 😸🎉",
-    "lurk": "shhh {name} is lurking 👀🔍",
-    "shoot": "bang bang {name} shoots 🔫😹",
-    "sleep": "zzz {name} is sleeping 💤😴",
-    "shrug": "meh {name} shrugs 🤷‍♂️😸",
-    "stare": "owo {name} is staring 👀🐱",
-    "wave": "hi hi {name} waves 👋😺",
-    "poke": "poke poke {name} pokes 👉😹",
-    "smile": "smile {name} is smiling 😊😸",
-    "peck": "peck peck {name} pecks 😚🐾",
-    "wink": "wink {name} winks 😉🐱",
-    "blush": "blush blush {name} blushes 😳💕",
-    "smug": "smug {name} looks smug 😏✨",
-    "tickle": "tickle tickle {name} tickles 😆😺",
-    "yeet": "yeet {name} yeets 💨😹",
-    "think": "hmm {name} is thinking 🤔🐾",
-    "highfive": "highfive {name} gives a highfive 🙌😸",
-    "feed": "nom nom {name} feeds 🍽️🐱",
-    "bite": "chomp {name} bites 😬🐾",
-    "bored": "sigh {name} is bored 😒😿",
-    "nom": "nom nom {name} noms 🍴😺",
-    "yawn": "yawn {name} yawns 😪🐱",
-    "facepalm": "facepalm {name} facepalms 🤦‍♂️😹",
-    "cuddle": "cuddle cuddle {name} cuddles 🤗💕",
-    "kick": "kick {name} kicks 👟😼",
-    "hug": "hug hug {name} hugs 🤗😺",
-    "baka": "baka {name} says baka 🙄😹",
-    "pat": "pat pat {name} pats 🖐️😸",
-    "nod": "nod {name} nods 👍🐾",
-    "nope": "nope {name} says nope 🙅‍♂️🐱",
-    "kiss": "kiss kiss {name} kisses 😘💕",
-    "dance": "dance dance {name} dances 💃🐱",
-    "punch": "punch {name} punches 👊😼",
-    "handshake": "shake shake {name} handshakes 🤝🐾",
-    "slap": "slap slap {name} slaps ✋😹",
-    "cry": "sob sob {name} cries 😢🐱",
-    "pout": "pout {name} pouts 😡😿",
-    "handhold": "hold hold {name} holds hands 🤝😺",
-    "thumbsup": "thumbs up {name} gives a thumbs up 👍😸",
-    "laugh": "giggle giggle {name} laughs 😂😹"
+    "neko": [
+        "nyaa~ {name} shows off their kawaii neko ears! 🐱✨",
+        "meow meow~ {name} purrs and wiggles their tail~ 🐾💝",
+        "nya nya~ {name} is feeling extra catlike today! 😺💫"
+    ],
+    "waifu": [
+        "nyaaaa!~ {name} found their purrfect waifu! 😻💖",
+        "meow meow~ {name}'s tail wiggles excitedly~ 🐱💕",
+        "purr purr~ {name} nuzzles their waifu nya! ✨😽"
+    ],
+    "husbando": [
+        "nyaaa!~ {name} found their dreamy husbando! 😻💝",
+        "meow meow~ {name}'s ears perk up happily~ 🐱💗",
+        "purrrr~ {name} circles around excitedly nya! 😸✨"
+    ],
+    "kitsune": [
+        "nya nya~ {name} meets a foxy friend! 🦊💫",
+        "meow!~ {name}'s tail dances with excitement~ 🐱✨",
+        "nyaa!~ {name} shares mystic powers nya! 😺🌟"
+    ],
+    "happy": [
+        "nyaaaa!~ {name} purrs with joy! 😸💝",
+        "meow meow!~ {name}'s tail stands straight up! 🐱✨",
+        "purr purr~ {name} rolls around happily nya! 😺💫"
+    ],
+    "lurk": [
+        "nya...~ {name} stalks their prey quietly~ 🐱👀",
+        "meow?~ {name} wiggles butt before pouncing~ 😼💫",
+        "*silent pawsteps* {name} lurks nya... 😺✨"
+    ],
+    "shoot": [
+        "nya nya!~ {name} pounces with precision! 😸⚡",
+        "meow!~ {name} shows their hunting skills~ 🐱💫",
+        "nyaa!~ {name} catches their target nya! 😺✨"
+    ],
+    "sleep": [
+        "nyaaa~ {name} curls up for a catnap! 😴💤",
+        "meow...~ {name} purrs softly in their sleep~ 🐱💫",
+        "zzz~ {name} dreams of fish nya... 😺✨"
+    ],
+    "shrug": [
+        "nya?~ {name} tilts head in confusion! 😸❓",
+        "meow meow~ {name} flicks tail dismissively~ 🐱💫",
+        "nyaa~ {name} doesn't know nya! 😺✨"
+    ],
+    "stare": [
+        "nya!~ {name} watches with big kitty eyes! 👀✨",
+        "meow~? {name}'s tail swishes curiously~ 🐱💫",
+        "nyaa!~ {name} stares intently nya! 😺🔍"
+    ],
+    "wave": [
+        "nya nya!~ {name} waves their paw! 🐱👋",
+        "meow meow!~ {name} greets with tail up high~ 😺💫",
+        "nyaa!~ {name} says hewwo nya! 😸✨"
+    ],
+    "poke": [
+        "nya!~ {name} bats with their paw! 🐱🐾",
+        "meow~! {name} taps curiously~ 😺💫",
+        "nyaa!~ {name} pokes with beans nya! 😸✨"
+    ],
+    "smile": [
+        "nya nya!~ {name} shows their fangs! 😺💝",
+        "meow~! {name}'s whiskers twitch happily~ 🐱✨",
+        "nyaa!~ {name} purrs with joy nya! 😸💫"
+    ],
+    "peck": [
+        "nya~! {name} gives a kitty kiss! 😽💝",
+        "meow~! {name} nuzzles sweetly~ 🐱✨",
+        "nyaa!~ {name} shows affection nya! 😺💫"
+    ],
+    "wink": [
+        "nya nya~! {name} winks playfully! 😺💫",
+        "meow~! {name}'s tail curls mischievously~ 🐱✨",
+        "nyaa!~ {name} is being sneaky nya! 😸💝"
+    ],
+    "blush": [
+        "nya...~ {name}'s ears turn pink! 😳💝",
+        "meow...~ {name} hides behind their paws~ 🐱✨",
+        "nyaa!~ {name} blushes bright red nya! 😺💫"
+    ],
+    "smug": [
+        "nya nya~! {name} looks very pleased! 😼✨",
+        "meow~! {name}'s tail stands proud~ 🐱💫",
+        "nyaa!~ {name} knows they're purrfect nya! 😺💝"
+    ],
+    "tickle": [
+        "nya nya!~ {name} squirms and giggles! 😸✨",
+        "meow!~ {name}'s tail poofs up~ 🐱💫",
+        "nyaa!~ {name} can't stop laughing nya! 😺💝"
+    ],
+    "yeet": [
+        "nya!~ {name} pounces far away! 😸💨",
+        "meow!~ {name} zooms at light speed~ 🐱✨",
+        "nyaa!~ {name} leaps into space nya! 😺💫"
+    ],
+    "think": [
+        "nya?~ {name} ponders deeply! 🐱💭",
+        "meow...~ {name}'s tail twitches in thought~ 😺✨",
+        "nyaa!~ {name} has an idea nya! 😸💫"
+    ],
+    "highfive": [
+        "nya nya!~ {name} raises their paw high! 🐾✨",
+        "meow!~ {name} gives pawfive~ 🐱💫",
+        "nyaa!~ {name} celebrates nya! 😺💝"
+    ],
+    "feed": [
+        "nya nya!~ {name} noms delicious food! 😋🐱",
+        "meow!~ {name} munches happily~ 😺🍱",
+        "nyaa!~ {name} enjoys treats nya! 🐱💝"
+    ],
+    "bite": [
+        "nya!~ {name} nomps gently! 🐱💫",
+        "meow!~ {name} shows their fangs~ 😺✨",
+        "nyaa!~ {name} takes a nibble nya! 😸🐾"
+    ],
+    "bored": [
+        "nya...~ {name} needs attention! 😿💫",
+        "meow...~ {name}'s tail droops sadly~ 🐱✨",
+        "nyaa...~ {name} has nothing to do nya... 😺💤"
+    ],
+    "nom": [
+        "nya nya!~ {name} enjoys their meal! 😋🐱",
+        "meow!~ {name} munches fishies~ 😺🐟",
+        "nyaa!~ {name} gobbles treats nya! 🐱💝"
+    ],
+    "yawn": [
+        "nyaaa~! {name} shows their fangs! 😺💤",
+        "meow...~ {name} needs a catnap~ 🐱✨",
+        "nyaa...~ {name} is sleepy nya... 😪💫"
+    ],
+    "facepalm": [
+        "nya...~ {name} covers face with paw! 🐱💫",
+        "meow...~ {name}'s ears droop in disbelief~ 😿✨",
+        "nyaa...~ {name} can't believe it nya... 😺🤦"
+    ],
+    "cuddle": [
+        "nya nya!~ {name} snuggles close! 🐱💝",
+        "meow~! {name} purrs contentedly~ 😺💫",
+        "nyaa!~ {name} wants warmth nya! 😸✨"
+    ],
+    "kick": [
+        "nya!~ {name} uses back paws! 🐱⚡",
+        "meow!~ {name} shows ninja kicks~ 😺💫",
+        "nyaa!~ {name} is strong nya! 😸✨"
+    ],
+    "hug": [
+        "nya nya!~ {name} gives warm hugs! 🐱💝",
+        "meow~! {name} wraps tail around~ 😺💫",
+        "nyaa!~ {name} snuggles tight nya! 😸✨"
+    ],
+    "baka": [
+        "nya!~ {name} swishes tail angrily! 😾💢",
+        "meow!~ {name}'s fur stands up~ 🐱⚡",
+        "nyaa!~ {name} is annoyed nya! 😺✨"
+    ],
+    "pat": [
+        "nya~! {name} enjoys the pets! 🐱💝",
+        "meow~! {name} purrs happily~ 😺✨",
+        "nyaa!~ {name} leans into pats nya! 😸💫"
+    ],
+    "nod": [
+        "nya!~ {name} bobs head in agreement! 🐱✨",
+        "meow~! {name}'s ears wiggle~ 😺💫",
+        "nyaa!~ {name} understands nya! 😸💝"
+    ],
+    "nope": [
+        "nya!~ {name} turns their nose up! 😾💢",
+        "meow!~ {name}'s tail says no~ 🐱✨",
+        "nyaa!~ {name} refuses nya! 😺💫"
+    ],
+    "kiss": [
+        "nya~! {name} gives nose boops! 😽💝",
+        "meow~! {name} shows affection~ 🐱✨",
+        "nyaa!~ {name} gives kisses nya! 😺💫"
+    ],
+    "dance": [
+        "nya nya!~ {name} moves their paws! 🐱💃",
+        "meow~! {name}'s tail dances~ 😺✨",
+        "nyaa!~ {name} grooves nya! 😸💫"
+    ],
+    "punch": [
+        "nya!~ {name} swats with paw! 🐱⚡",
+        "meow!~ {name} shows their strength~ 😺💫",
+        "nyaa!~ {name} is powerful nya! 😸✨"
+    ],
+    "handshake": [
+        "nya!~ {name} offers their paw! 🐱🤝",
+        "meow~! {name} greets formally~ 😺✨",
+        "nyaa!~ {name} makes friends nya! 😸💫"
+    ],
+    "slap": [
+        "nya!~ {name} swats with beans! 🐱⚡",
+        "meow!~ {name}'s paw goes swoosh~ 😺💫",
+        "nyaa!~ {name} is upset nya! 😾✨"
+    ],
+    "cry": [
+        "nya...~ {name} needs comfort! 😿💧",
+        "meow...~ {name}'s ears droop sadly~ 🐱💫",
+        "nyaa...~ {name} is sad nya... 😺✨"
+    ],
+    "pout": [
+        "nya!~ {name} puffs their cheeks! 😾💢",
+        "meow!~ {name}'s tail twitches angrily~ 🐱✨",
+        "nyaa!~ {name} is grumpy nya! 😺💫"
+    ],
+    "handhold": [
+        "nya~! {name} offers their paw! 🐱💝",
+        "meow~! {name} wants to hold paws~ 😺✨",
+        "nyaa!~ {name} stays close nya! 😸💫"
+    ],
+    "thumbsup": [
+        "nya!~ {name} raises their paw! 🐱👍",
+        "meow~! {name} approves happily~ 😺💫",
+        "nyaa!~ {name} says yes nya! 😸✨"
+    ],
+    "laugh": [
+        "nya nya!~ {name} can't stop giggling! 😸💫",
+        "meow~! {name} purrs with laughter~ 🐱✨",
+        "nyaa!~ {name} is happy nya! 😺💝"
+    ]
 }
+
 
 def get_InputMediaType(data):
        format = data['format']
@@ -325,7 +504,7 @@ async def inline(bot, query):
         results.append(
             media_type(
                 data['url'],
-                caption=f"**{NEKOS_BEST_TEXT[pattern].format(name=user.full_name)}**",
+                caption=f"**{random.choice(NEKOS_BEST_TEXT[pattern]).format(name=user.full_name)}**",
             )
         )
     return await bot.answer_inline_query(inline_query_id, results, cache_time=2, is_gallery=True)
