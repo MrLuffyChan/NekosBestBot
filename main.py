@@ -2,7 +2,7 @@ import logging, os, random
 import asyncio
 
 from pyrogram import filters, enums, Client, __version__ as pyro_version
-from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputTextMessageContent, InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultAnimation, CallbackQuery
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup, InputTextMessageContent, InlineQueryResultArticle, InlineQueryResultPhoto, InlineQueryResultAnimation
 
 import requests
 
@@ -41,6 +41,7 @@ buttons = [[
 ],[
             
             InlineKeyboardButton("🆘 Help Plugin", callback_data="help_back"),
+            InlineKeyboardButton("✨ Try Inline", switch_inline_query_current_chat=""),
           
 ],[
             InlineKeyboardButton("👥 Support", url=f"https://t.me/{SUPPORT}"),
@@ -227,20 +228,21 @@ def get_InputMediaType(data):
 
 def convert_button(data, columns):
     result = []
-
+    
     for i in range(0, len(data), columns):
         result.append(data[i:i + columns])
 
-    # If the last row has fewer columns, extend it with remaining data
-    if len(result[-1]) < columns:
-        result[-1].extend(data[len(result[-1]):])
-
+    # If the last row has fewer columns and there are still data left, create a new row
+    if len(result[-1]) < columns and len(data) > len(result[-1]) + columns:
+        new_row = data[len(result[-1]) + columns:]
+        result.append(new_row)
+        
     return result
 
 
 NEKOS_BUTTONS = convert_button(
     [InlineKeyboardButton(text=q, switch_inline_query_current_chat=q) for q in list(NEKOS_BEST)],
-    columns=3
+    columns=4
 )
 
 @bot.on_inline_query()
@@ -289,10 +291,11 @@ async def inline(bot, query):
         results.append(
             media_type(
                 data['url'],
+                caption=text,
                 reply_markup=InlineKeyboardMarkup(buttons)
             )
         )
-    return await bot.answer_inline_query(inline_query_id, results, cache_time=2)
+    return await bot.answer_inline_query(inline_query_id, results, cache_time=2, is_gallery=True)
 
 
                                   
