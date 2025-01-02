@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 # enable logging
-lFORMAT = f"[NekosBestBot] %(message)s"
+FORMAT = f"[NekosBestBot] %(message)s"
 logging.basicConfig(level=logging.INFO, handlers=[logging.FileHandler('logs.txt'), logging.StreamHandler()], format=FORMAT)
 
   
@@ -1127,4 +1127,8 @@ if __name__ == "__main__":
      loop.run_until_complete(start_services())
      bot.run()
      log.info('Bot Started!')
+     with bot:
+        bot.send_message(f"@{SUPPORT}", "**Nyan nyan~ Senpai is back from a fresh start!** 🐾😸✨")
+         
+     
      
