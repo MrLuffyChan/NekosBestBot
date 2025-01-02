@@ -291,7 +291,7 @@ NEKOS_BUTTONS = convert_button(
 @bot.on_inline_query()
 async def inline(bot, query):
     q = query.query
-    user = q.from_user
+    user = query.from_user
     inline_query_id = query.id
 
     if not q:
