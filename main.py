@@ -298,7 +298,7 @@ async def inline(bot, query):
         results = [
             InlineQueryResultArticle(
                 title="Query Not Found! 😹",
-                input_message_content=InputTextMessageContent(message_text="**Query nyan found! I needed an endpoint, senpai~!** 🐾"),
+                input_message_content=InputTextMessageContent(message_text="**Query nyan found! I needed an endpoint, senpai\~!** 🐾"),
                 reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
             )
         ]
@@ -310,7 +310,7 @@ async def inline(bot, query):
         results = [
             InlineQueryResultArticle(
                 title="Given nyan! Query Not Found! 😹",
-                input_message_content=InputTextMessageContent(message_text="❌ **Given nyan query is not found! Please use a valid endpoint, senpai~!** 😸"),
+                input_message_content=InputTextMessageContent(message_text="❌ **Given nyan query is not found! Please use a valid endpoint, senpai\~!** 😸"),
                 reply_markup=InlineKeyboardMarkup(NEKOS_BUTTONS)
             )
         ]
@@ -1128,7 +1128,7 @@ if __name__ == "__main__":
      bot.run()
      log.info('Bot Started!')
      with bot:
-        bot.send_message(f"@{SUPPORT}", "**Nyan nyan~ Senpai is back from a fresh start!** 🐾😸✨")
+        bot.send_message(f"@{SUPPORT}", "**Nyan nyan\~ Senpai is back from a fresh start!** 🐾😸✨")
          
      
      
