@@ -1,8 +1,4 @@
-
-
-
-
-WEB_URL = "https://neko-best-bot.onrender.com/"
+WEB_URL = "https://neko-0l4f.onrender.com"
 WEB_SLLEP = 3*60
 
 
